@@ -1,3 +1,0 @@
-[submodule "Platform"]
-	path = Platform
-	url = ssh://git@github.com/AnotherJohnH/Platform.git
