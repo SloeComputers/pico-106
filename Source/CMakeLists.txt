@@ -20,30 +20,25 @@
 #  SOFTWARE.
 #-------------------------------------------------------------------------------
 
-add_custom_command(
-   COMMENT
-      "Auto-generate tables"
-   COMMAND
-      ${CMAKE_COMMAND}
-         -E env PYTHONPATH=${python_path}
-         ${CMAKE_CURRENT_SOURCE_DIR}/AUTO.py
-   DEPENDS
-      ${CMAKE_CURRENT_SOURCE_DIR}/AUTO.py
-      ${python_path}/Table.py
-   OUTPUT
-      ${CMAKE_CURRENT_BINARY_DIR}/Table_exp_24.h
-      ${CMAKE_CURRENT_BINARY_DIR}/Table_exp_24.cpp
-   )
+autogen_py(Table_exp_24)
 
-add_executable(pico-106
-               Table_exp_24.cpp
-               pico-106.cpp)
+foreach(hw_config ${hw_picoX7_config_list})
 
-target_include_directories(pico-106
-                           PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-                           PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+   add_executable(pico-106_${hw_config}
+                  Table_exp_24.cpp
+                  pico-106.cpp)
 
-target_link_libraries(pico-106 PRIVATE TNY MTL TNY)
+   target_include_directories(pico-106_${hw_config}
+                              PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+   target_compile_definitions(pico-106_${hw_config} PRIVATE HW_${hw_config})
+
+   target_link_libraries(pico-106_${hw_config} PRIVATE HW)
+
+   set_target_properties(pico-106_${hw_config} PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+
+endforeach()
 
 # add_executable(test_midi_in test_midi_in.cpp)
 # target_link_libraries(test_midi_in PRIVATE TNY MTL TNY)

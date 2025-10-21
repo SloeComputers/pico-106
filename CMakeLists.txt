@@ -23,13 +23,15 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(pico106
-        LANGUAGES CXX ASM
-        VERSION 0.1)
+        LANGUAGES CXX C ASM
+        VERSION 0.02)
+
+include(CTest)
+
+set(HARDWARE picoX7)
 
 add_subdirectory(Platform)
-
-set(python_path ${CMAKE_CURRENT_SOURCE_DIR}/Platform/python)
-
+add_subdirectory(Hardware)
 add_subdirectory(Source)
 
 if(${PLT_TARGET} STREQUAL rpipico OR ${PLT_TARGET} STREQUAL rpipico2)

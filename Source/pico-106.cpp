@@ -24,7 +24,7 @@
 
 #include <cstdio>
 
-#include "hw/hw.h"
+#include "Hardware/picoX7/Config.h"
 
 #include "Synth.h"
 #include "Voice.h"
@@ -34,9 +34,9 @@ static const unsigned NUM_VOICES = 3;    //!< Number of external DCO circuits, m
 static const bool     MIDI_DEBUG = true;
 
 
-static Synth<NUM_VOICES> synth {};
-static hw::MidiIn        midi_in {synth, MIDI_DEBUG};
-static hw::Led           led {};
+static Synth<NUM_VOICES> synth{};
+static hw::PhysMidi      phys_midi{};
+static hw::Led           led{};
 
 
 #if defined(HW_MIDI_USB_DEVICE)
@@ -64,9 +64,12 @@ int main()
    printf("Compiler : %s\n", __VERSION__);
    printf("\n");
 
+   phys_midi.setDebug(MIDI_DEBUG);
+   phys_midi.attachInstrument(1, synth);
+
    while(true)
    {
-      midi_in.tick();
+      phys_midi.tick();
 
 #if defined(HW_MIDI_USB_DEVICE)
       midi_usb.tick();
