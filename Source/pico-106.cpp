@@ -8,6 +8,7 @@
 #include <cstdio>
 
 #include "Hardware/picoX7/Config.h"
+#include "Hardware/FilePortal.h"
 
 #include "Synth.h"
 #include "Voice.h"
@@ -17,18 +18,25 @@ static const unsigned NUM_VOICES = 3;    //!< Number of external DCO circuits, m
 static const bool     MIDI_DEBUG = true;
 
 
+static hw::FilePortal file_portal{"pico-106",
+                                  "https://github.com/AnotherJohnH/pico-106"};
 static Synth<NUM_VOICES> synth{};
-static hw::PhysMidi      phys_midi{};
-static hw::Led           led{};
+
+// --- Physical MIDI -----------------------------------------------------------
+
+static hw::PhysMidi phys_midi{};
 
 
-#if defined(HW_MIDI_USB_DEVICE)
+// --- USB MIDI ----------------------------------------------------------------
 
-static hw::MidiUSBDevice midi_usb{synth, 0x9106, "pico-106", MIDI_DEBUG};
+static hw::UsbFileMidi usb{0x91C0, "picoChippy", file_portal};
 
-extern "C" void IRQ_USBCTRL() { midi_usb.irq(); }
+extern "C" void IRQ_USBCTRL() { usb.irq(); }
 
-#endif
+
+// --- LED ---------------------------------------------------------------------
+
+static hw::Led led{};
 
 
 int main()
@@ -38,25 +46,19 @@ int main()
    printf("\e[1,1H");
 
    printf("\n");
-   printf("Program  : pico-106 (%u voices)\n", NUM_VOICES);
-   printf("Author   : Copyright (c) 2024 John D. Haughton\n");
-   printf("License  : MIT\n");
-   printf("Version  : %s\n", PLT_VERSION);
-   printf("Commit   : %s\n", PLT_COMMIT);
-   printf("Built    : %s %s\n", __TIME__, __DATE__);
-   printf("Compiler : %s\n", __VERSION__);
+   puts(file_portal.addREADME("pico-106"));
    printf("\n");
 
    phys_midi.setDebug(MIDI_DEBUG);
    phys_midi.attachInstrument(1, synth);
 
+   usb.setDebug(MIDI_DEBUG);
+   usb.attachInstrument(1, synth);
+
    while(true)
    {
       phys_midi.tick();
-
-#if defined(HW_MIDI_USB_DEVICE)
-      midi_usb.tick();
-#endif
+      usb.tick();
 
       led = synth.isAnyVoiceOn();
    }
