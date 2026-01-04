@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "MTL/Config.h"
+#include "MTL/chip/Pins.h"
 #include "MTL/chip/Pwm.h"
 #include "MTL/chip/PioClkLoFreq.h"
 

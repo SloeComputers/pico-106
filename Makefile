@@ -1,5 +1,5 @@
 
-targets = rpipico rpipico2
+targets = rp2040 rp2350
 
 all: $(targets)
 
