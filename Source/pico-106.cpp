@@ -19,7 +19,7 @@ static const bool     MIDI_DEBUG = true;
 
 
 static hw::FilePortal file_portal{"pico-106",
-                                  "https://github.com/AnotherJohnH/pico-106"};
+                                  "https://github.com/SloeComputers/pico-106"};
 static Synth<NUM_VOICES> synth{};
 
 // --- Physical MIDI -----------------------------------------------------------

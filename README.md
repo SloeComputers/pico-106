@@ -15,7 +15,7 @@ Usable as a musical instrument but plenty more to explore...
 
 ## Hardware
 
-[schematic](https://github.com/AnotherJohnH/pico-106/blob/main/docs/schematic_v0.01.pdf)
+[schematic](https://github.com/SloeComputers/pico-106/blob/main/docs/schematic_v0.01.pdf)
 
 ... to be improved ;-)
 
@@ -23,7 +23,7 @@ Usable as a musical instrument but plenty more to explore...
 
 ### Dependencies
 
-+ https://github.com/AnotherJohnH/Platform
++ https://github.com/SloeComputers/Platform
 + arm-none-eabi-gcc
 + cmake
 + ninja (make works too)
@@ -33,11 +33,11 @@ Usable as a musical instrument but plenty more to explore...
 This repo uses git sub-modules, so checkout using --recurse to clone all the
 dependent source...
 
-    git clone --recurse https://github.com/AnotherJohnH/pico-106.git
+    git clone --recurse https://github.com/SloeComputers/pico-106.git
 
 or
 
-    git clone --recurse ssh://git@github.com/AnotherJohnH/pico-106.git
+    git clone --recurse ssh://git@github.com/SloeComputers/pico-106.git
 
 ### Build
 
