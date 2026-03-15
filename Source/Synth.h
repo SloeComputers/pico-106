@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "STB/MIDIInstrument.h"
+#include "MIDI/Instrument.h"
 
 #include "DCO.h"
 #include "Voice.h"
