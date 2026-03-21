@@ -7,8 +7,8 @@
 
 #include <cstdio>
 
-#include "Hardware/picoX7/Config.h"
-#include "Hardware/FilePortal.h"
+#include "HWR/picoX7/Config.h"
+#include "HWR/FilePortal.h"
 
 #include "Synth.h"
 #include "Voice.h"
@@ -18,25 +18,25 @@ static const unsigned NUM_VOICES = 3;    //!< Number of external DCO circuits, m
 static const bool     MIDI_DEBUG = true;
 
 
-static hw::FilePortal file_portal{"pico-106",
-                                  "https://github.com/SloeComputers/pico-106"};
+static HWR::FilePortal file_portal{"pico-106",
+                                   "https://github.com/SloeComputers/pico-106"};
 static Synth<NUM_VOICES> synth{};
 
 // --- Physical MIDI -----------------------------------------------------------
 
-static hw::PhysMidi phys_midi{};
+static HWR::PhysMidi phys_midi{};
 
 
 // --- USB MIDI ----------------------------------------------------------------
 
-static hw::UsbFileMidi usb{0x91C0, "picoChippy", file_portal};
+static HWR::UsbFileMidi usb{0x91C0, "pico-106", file_portal};
 
 extern "C" void IRQ_USBCTRL() { usb.irq(); }
 
 
 // --- LED ---------------------------------------------------------------------
 
-static hw::Led led{};
+static HWR::Led led{};
 
 
 int main()
