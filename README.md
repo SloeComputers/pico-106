@@ -23,7 +23,7 @@ Usable as a musical instrument but plenty more to explore...
 
 ### Dependencies
 
-+ https://github.com/SloeComputers/Platform
++ https://github.com/SloeComputers/PDK
 + arm-none-eabi-gcc
 + cmake
 + ninja (make works too)
@@ -49,7 +49,7 @@ Build directly using cmake...
 
     mkdir build
     cd build
-    cmake -DCMAKE_BUILD_TYPE=Release -DPLT_TARGET=rp2350 -DCMAKE_TOOLCHAIN_FILE=Platform/MTL/rp2350/target/toolchain.cmake ..
+    cmake -DCMAKE_BUILD_TYPE=Release -DPLT_TARGET=rp2350 -DCMAKE_TOOLCHAIN_FILE=PDK/MTL/rp2350/target/toolchain.cmake ..
     make
 
 Flashable image will be found under the build sub directory here...
