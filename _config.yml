@@ -1,0 +1,5 @@
+theme: jekyll-theme-slate
+title: pico-106
+description: A SloeComputers Project
+exclude:
+   - PDK

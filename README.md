@@ -8,6 +8,8 @@ Some DCOs driven by a Raspberry Pi Pico with a USB MIDI interface.
 
 ## Status
 
+[![Build Status](https://github.com/SloeComputers/pico-106/actions/workflows/build_on_push.yml/badge.svg)](https://github.com/SloeComputers/pico-106/actions/workflows/build_on_push.yml)
+
 Usable as a musical instrument but plenty more to explore...
 + No LFO
 + No PWM, sub-oscillatgor or noise
