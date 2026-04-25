@@ -8,71 +8,55 @@ env:
 jobs:
 
   #---------------------------------------------------------------------
-  # MacOS CI
+  # RP2040 CI
 
-  build_MacOS:
+  build_rp2040:
     runs-on: macOS-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
        submodules: 'recursive'
 
     - name: Install dependencies
-      run:  brew install SDL2
+      run:  brew install arm-none-eabi-gcc
 
     - name: Prepare build
-      run: cmake -E make_directory ${{github.workspace}}/build_mac
+      run: mkdir -p ${{github.workspace}}/build/rp2040
 
     - name: Configure build
-      working-directory: ${{github.workspace}}/build_mac
+      working-directory: ${{github.workspace}}/build/rp2040
       shell: bash
-      run: cmake -DBUILD_TESTING=ON ..
+      run: cmake -DPDK_TARGET=rp2040 -DCMAKE_TOOLCHAIN_FILE=PDK/MTL/rp2040/target/toolchain.cmake ../..
 
     - name: Build
-      working-directory: ${{github.workspace}}/build_mac
+      working-directory: ${{github.workspace}}/build/rp2040
       shell: bash
       run: make
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build_mac
-      shell: bash
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -V -C $BUILD_TYPE
-
   #---------------------------------------------------------------------
-  # Linux CI
+  # RP2350 CI
 
-  build_Linux:
-    runs-on: ubuntu-latest
+  build_rp2350:
+    runs-on: macOS-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
        submodules: 'recursive'
 
     - name: Install dependencies
-      run: |
-           sudo apt-get update
-           sudo apt-get install -y libsdl2-dev
+      run:  brew install arm-none-eabi-gcc
 
     - name: Prepare build
-      run: cmake -E make_directory ${{github.workspace}}/build_linux
+      run: mkdir -p ${{github.workspace}}/build/rp2350
 
-    - name: Configure CMake
+    - name: Configure build
+      working-directory: ${{github.workspace}}/build/rp2350
       shell: bash
-      working-directory: ${{github.workspace}}/build_linux
-      run: export SDL2_DIR=${{github.workspace}}/.github/workflows; cmake -DBUILD_TESTING=ON ..
+      run: cmake -DPDK_TARGET=rp2350 -DCMAKE_TOOLCHAIN_FILE=PDK/MTL/rp2350/target/toolchain.cmake ../..
 
     - name: Build
-      working-directory: ${{github.workspace}}/build_linux
+      working-directory: ${{github.workspace}}/build/rp2350
       shell: bash
       run: make
-
-    - name: Test
-      working-directory: ${{github.workspace}}/build_linux
-      shell: bash
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -V -C $BUILD_TYPE
