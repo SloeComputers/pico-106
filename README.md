@@ -51,12 +51,12 @@ Build directly using cmake...
 
     mkdir build
     cd build
-    cmake -DCMAKE_BUILD_TYPE=Release -DPLT_TARGET=rp2350 -DCMAKE_TOOLCHAIN_FILE=PDK/MTL/rp2350/target/toolchain.cmake ..
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=PDK/TGT/rp2350/toolchain.cmake ..
     make
 
 Flashable image will be found under the build sub directory here...
 
-    .../Source/pico-106_RPIPICO_I2S_DAC.uf2
+    .../pico-106_RPIPICO_I2S_DAC.uf2
 
 ## License
 

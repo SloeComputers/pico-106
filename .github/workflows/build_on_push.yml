@@ -8,13 +8,17 @@ env:
 jobs:
 
   #---------------------------------------------------------------------
-  # RP2040 CI
+  # MTL target CI
 
-  build_rp2040:
+  build_TGT:
     runs-on: macOS-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [rp2040, rp2350]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
        submodules: 'recursive'
 
@@ -22,41 +26,20 @@ jobs:
       run:  brew install arm-none-eabi-gcc
 
     - name: Prepare build
-      run: mkdir -p ${{github.workspace}}/build/rp2040
+      run: mkdir -p ${{github.workspace}}/build/${{matrix.target}}
 
     - name: Configure build
-      working-directory: ${{github.workspace}}/build/rp2040
+      working-directory: ${{github.workspace}}/build/${{matrix.target}}
       shell: bash
-      run: cmake -DPDK_TARGET=rp2040 -DCMAKE_TOOLCHAIN_FILE=PDK/MTL/rp2040/target/toolchain.cmake ../..
+      run: cmake ../.. -DCMAKE_TOOLCHAIN_FILE=PDK/TGT/${{matrix.target}}/toolchain.cmake
 
     - name: Build
-      working-directory: ${{github.workspace}}/build/rp2040
+      working-directory: ${{github.workspace}}/build/${{matrix.target}}
       shell: bash
       run: make
 
-  #---------------------------------------------------------------------
-  # RP2350 CI
-
-  build_rp2350:
-    runs-on: macOS-latest
-
-    steps:
-    - uses: actions/checkout@v4
+    - uses: actions/upload-artifact@v7
       with:
-       submodules: 'recursive'
-
-    - name: Install dependencies
-      run:  brew install arm-none-eabi-gcc
-
-    - name: Prepare build
-      run: mkdir -p ${{github.workspace}}/build/rp2350
-
-    - name: Configure build
-      working-directory: ${{github.workspace}}/build/rp2350
-      shell: bash
-      run: cmake -DPDK_TARGET=rp2350 -DCMAKE_TOOLCHAIN_FILE=PDK/MTL/rp2350/target/toolchain.cmake ../..
-
-    - name: Build
-      working-directory: ${{github.workspace}}/build/rp2350
-      shell: bash
-      run: make
+        name: pico-106_${{matrix.target}}
+        path: |
+          ${{github.workspace}}/build/${{matrix.target}}/*.uf2
